@@ -1,0 +1,45 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "domains"
+    label: "Domains"
+    folder: "content/domains"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Domain Name", name: "title", widget: "string"}
+      - {label: "Description", name: "description", widget: "markdown"}
+      - {label: "Price (Optional)", name: "price", widget: "string", required: false}
+      - {label: "Status", name: "status", widget: "select", options: ["Available", "Under Review", "Sold", "Hidden"], default: "Available"}
+
+  - name: "blog"
+    label: "Blog"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Subtitle/Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Author", name: "author", widget: "string", default: "Omar"}
+      - {label: "Featured Image", name: "image", widget: "image", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "settings"
+    label: "Global Settings"
+    files:
+      - name: "site_settings"
+        label: "Site Settings"
+        file: "content/settings.json"
+        fields:
+          - {label: "Site Logo", name: "logo", widget: "image", required: false}
+          - {label: "Favicon", name: "favicon", widget: "image", required: false}
+          - {label: "Meta Description", name: "meta_description", widget: "text"}
+          - {label: "Google Search Console Tag", name: "google_console", widget: "code", default: "", required: false}
+          - {label: "Google AdSense Tag", name: "google_adsense", widget: "code", default: "", required: false}
