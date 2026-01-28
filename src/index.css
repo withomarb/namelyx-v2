@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* تعريف ألوان البراند الخاصة بـ Namelyx */
+@theme {
+  --color-brand-bg: #0A0A0A;
+  --color-brand-accent: #00FF9D;
+  --color-brand-text: #FFFFFF;
+}
+
+:root {
+  background-color: #0A0A0A;
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+@layer utilities {
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

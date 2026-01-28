@@ -6,116 +6,15 @@
     <title>Namelyx | Premium Digital Real Estate</title>
     <meta name="description" content="Curating Digital Excellence for the AI & Tech Era.">
     
-    <!-- Netlify Identity (Required for CMS Auth) -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%230A0A0A'/%3E%3Ctext x='50' y='72' font-family='sans-serif' font-weight='900' font-size='65' text-anchor='middle' fill='%2300FF9D'%3EN%3C/text%3E%3C/svg%3E">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              brand: {
-                bg: '#0A0A0A', // Matte Black
-                card: 'transparent',
-                border: 'rgba(255, 255, 255, 0.1)', // Ultra thin dark border look
-                accent: '#00FF9D', // Vibrant Tech Green
-                text: '#FFFFFF', // Glowing White
-              }
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.6s ease-out forwards',
-              'slide-up': 'slideUp 0.6s ease-out forwards',
-              'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              },
-              slideUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-              pulseGlow: {
-                '0%, 100%': { opacity: '1', boxShadow: '0 0 10px rgba(0, 255, 157, 0.3)' },
-                '50%': { opacity: '0.9', boxShadow: '0 0 20px rgba(0, 255, 157, 0.6)' },
-              }
-            }
-          },
-        },
-      }
-    </script>
-    <style>
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0A0A0A; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #333; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #444; 
-      }
-      body {
-        background-color: #0A0A0A;
-        color: #FFFFFF;
-      }
-      .text-glow {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-      }
-      .text-glow-green {
-        text-shadow: 0 0 12px rgba(0, 255, 157, 0.6);
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@18.3.1",
-    "react/": "https://esm.sh/react@18.3.1/",
-    "react-dom": "https://esm.sh/react-dom@18.3.1",
-    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "vite": "https://esm.sh/vite@^7.3.1"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
+  </head>
   <body>
-    <!-- Hidden Netlify Form for Build Detection -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
-      <input type="text" name="name" />
-      <input type="email" name="email" />
-      <select name="subject"></select>
-      <textarea name="message"></textarea>
-    </form>
-    
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
+    
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

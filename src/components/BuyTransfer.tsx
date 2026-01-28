@@ -1,11 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // استيراد محرك التنقل
 import { ArrowRightIcon, ShieldCheckIcon, ChatBubbleIcon, RocketIcon } from './Icons';
 
-interface BuyTransferProps {
-  onNavigate: (view: string) => void;
-}
+// حذفنا الـ Interface القديم لأنه لم يعد مطلوباً
+const BuyTransfer: React.FC = () => {
+  const navigate = useNavigate(); // تفعيل محرك التنقل داخلياً
 
-const BuyTransfer: React.FC<BuyTransferProps> = ({ onNavigate }) => {
   return (
     <section className="min-h-screen pt-32 pb-24 bg-brand-bg relative overflow-hidden">
        {/* Background Ambience */}
@@ -17,10 +17,10 @@ const BuyTransfer: React.FC<BuyTransferProps> = ({ onNavigate }) => {
         {/* Header Section */}
         <div className="text-center mb-20 max-w-4xl mx-auto">
           <span className="text-brand-accent text-xs font-bold uppercase tracking-[0.3em] mb-4 block">
-             Guide to Ownership
+              Guide to Ownership
           </span>
           <h1 className="text-4xl md:text-6xl font-sans font-bold text-white tracking-tight mb-8">
-            Secure Domain Acquisitions & <span className="text-brand-accent text-glow-green">Seamless Transfers</span>
+            Secure Domain Acquisitions & <span className="text-brand-accent">Seamless Transfers</span>
           </h1>
           <p className="text-xl text-gray-400 font-light leading-relaxed">
             Acquiring a premium digital asset is a significant investment. At Namelyx, we prioritize your security. 
@@ -78,18 +78,15 @@ const BuyTransfer: React.FC<BuyTransferProps> = ({ onNavigate }) => {
               In the high-stakes world of digital asset acquisition, trust is the ultimate currency. A premium domain is not just a web address; it is intellectual property, brand identity, and a store of value. As such, we treat every transfer with the same rigor as a real estate closing.
             </p>
             <p className="mb-6">
-              Our "Secure Acquisition Guide" is designed to eliminate risk. By utilizing third-party escrow services, we ensure that your funds are never released until you have full control of the domain. This protects you from non-delivery and ensures that we, as the seller, are protected from chargebacks. It is a mutually beneficial ecosystem that allows for high-value transactions to occur across borders without friction.
-            </p>
-            <p className="mb-8">
-              Furthermore, for our corporate clients, we understand the need for compliance and proper invoicing. Platforms like Atom and Escrow.com provide detailed VAT invoices and transaction records that satisfy rigorous accounting standards. Whether you are a startup founder or a corporate procurement officer, Namelyx is dedicated to making your acquisition experience professional, secure, and swift.
+              Our "Secure Acquisition Guide" is designed to eliminate risk. By utilizing third-party escrow services, we ensure that your funds are never released until you have full control of the domain.
             </p>
           </div>
         </div>
 
-        {/* CTA Section */}
+        {/* CTA Section - الزر المعدل هنا */}
         <div className="mt-16 text-center">
            <button 
-            onClick={() => onNavigate('contact')}
+            onClick={() => navigate('/contact')} // التعديل الجوهري: التوجيه لصفحة الاتصال
             className="inline-flex items-center gap-3 px-10 py-5 bg-brand-accent text-black font-bold uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-[0_4px_20px_rgba(0,255,157,0.3)] rounded-sm"
            >
             Contact Us to Discuss Your Next Domain <ArrowRightIcon className="w-4 h-4" />

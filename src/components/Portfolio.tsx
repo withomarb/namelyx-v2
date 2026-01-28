@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Domain } from '../types';
 import DomainCard from './DomainCard';
@@ -16,6 +15,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onInquire }) => {
     const loadData = async () => {
         try {
           const loadedContent = await getAllDomains();
+          // تأكد أن البيانات تأتي بصيغة attributes
           const domainData = loadedContent.map(c => c.attributes);
           setDomains(domainData);
         } catch (e) {
