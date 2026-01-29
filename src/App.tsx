@@ -29,6 +29,7 @@ import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import Cookies from './components/Cookies';
 import Faq from './components/Faq';
+import ManageDomains from './admin/ManageDomains';
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
@@ -99,6 +100,7 @@ const AppContent: React.FC = () => {
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/about" element={<Methodology />} />
+          <Route path="/admin/domains" element={<ManageDomains />} />
         </Routes>
       </main>
       <Footer onNavigate={(path) => navigate(path)} />

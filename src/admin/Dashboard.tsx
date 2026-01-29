@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   const menuItems = [
-    { title: "Manage Domains", desc: "Add, Edit or Delete Portfolio items", link: "/admin", icon: "🌐", color: "bg-blue-500/10" },
+    { title: "Manage Domains", desc: "Add, Edit or Delete Portfolio items", link: "/admin/domains", icon: "🌐", color: "bg-blue-500/10" },
     { title: "Blog Manager", desc: "Write articles & manage drafts", link: "/admin/posts", icon: "✍️", color: "bg-green-500/10" },
     { title: "SEO & Scripts", desc: "Google Analytics, Adsense & Meta", link: "/admin/settings", icon: "🚀", color: "bg-brand-accent/10" },
   ];
