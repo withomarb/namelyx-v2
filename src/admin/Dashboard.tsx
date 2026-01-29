@@ -71,7 +71,7 @@ const AdminDashboard = () => {
                   <td className="p-4 text-right">
                     <div className="flex justify-end gap-6">
                       <Link 
-                        to={`admin/edit/${domain.id}`} 
+                        to={`/admin/edit/${domain.id}`} 
                         className="text-brand-accent hover:text-white text-sm font-bold uppercase transition-colors"
                       >
                         Edit
