@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import AddDomain from './admin/AddDomain';
 import Login from './admin/Login';
 import AdminDashboard from './admin/Dashboard';
+import EditDomain from './admin/EditDomain';
 
 // استيراد المكونات الأساسية
 import Header from './components/Header';
@@ -76,6 +77,7 @@ const AppContent: React.FC = () => {
           <Route path="/about" element={<Methodology />} /> 
           <Route path="/admin/add" element={<AddDomain />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/edit/:id" element={<EditDomain />} />
         </Routes>
       </main>
 

@@ -33,7 +33,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm("هل أنت متأكد من حذف هذا الدومين؟")) {
       await deleteDoc(doc(db, "domains", id));
-      setDomains(domains.filter(d => d.id !== id)); // تحديث القائمة فوراً
+      setDomains(domains.filter(d => d.id !== id));
     }
   };
 
@@ -67,13 +67,22 @@ const AdminDashboard = () => {
                       {domain.status}
                     </span>
                   </td>
+                  {/* هنا قمنا بتحديث خلية الأزرار لتشمل التعديل */}
                   <td className="p-4 text-right">
-                    <button 
-                      onClick={() => handleDelete(domain.id)}
-                      className="text-red-500 hover:text-red-400 text-sm font-bold ml-4 uppercase"
-                    >
-                      Delete
-                    </button>
+                    <div className="flex justify-end gap-6">
+                      <Link 
+                        to={`/edit/${domain.id}`} 
+                        className="text-brand-accent hover:text-white text-sm font-bold uppercase transition-colors"
+                      >
+                        Edit
+                      </Link>
+                      <button 
+                        onClick={() => handleDelete(domain.id)}
+                        className="text-red-500 hover:text-red-400 text-sm font-bold uppercase transition-colors"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
