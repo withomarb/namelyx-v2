@@ -67,8 +67,9 @@ const AppContent: React.FC = () => {
           <Route path="/admin/login" element={<Login />} />
           
           {/* قسم المدونة: الآن سيظهر الفهرس وتفتح التدوينة */}
-          <Route path="/blog" element={<BlogIndex onReadPost={(slug) => navigate(`/blog/${slug}`)} />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
+          // استبدل السطرين اللذين أرسلتهما لي بهذين السطرين:
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
           
           {/* الروابط القانونية والدعم */}
           <Route path="/privacy" element={<Privacy />} />
