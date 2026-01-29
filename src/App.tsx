@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import AddDomain from './admin/AddDomain';
 import Login from './admin/Login';
+import AdminDashboard from './admin/Dashboard';
 
 // استيراد المكونات الأساسية
 import Header from './components/Header';
@@ -74,6 +75,7 @@ const AppContent: React.FC = () => {
           {/* صفحة About (توجيه مؤقت لـ Methodology إذا لم يوجد ملف About.tsx) */}
           <Route path="/about" element={<Methodology />} /> 
           <Route path="/admin/add" element={<AddDomain />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
 
