@@ -21,6 +21,7 @@ import CookieBanner from './components/CookieBanner';
 // استيراد مكونات المدونة (تأكد من وجود الملفات في مجلد components)
 import BlogIndex from './components/BlogIndex'; // السطر الذي سألت عنه لظهور التدوينات
 import BlogPost from './components/BlogPost';
+import AddPost from './admin/AddPost';
 
 // استيراد الملفات القانونية والدعم
 import Privacy from './components/Privacy';
@@ -78,6 +79,7 @@ const AppContent: React.FC = () => {
           <Route path="/admin/add" element={<AddDomain />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/edit/:id" element={<EditDomain />} />
+          <Route path="/admin/add-post" element={<AddPost />} />
         </Routes>
       </main>
 
