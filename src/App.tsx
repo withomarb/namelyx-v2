@@ -67,7 +67,6 @@ const AppContent: React.FC = () => {
           <Route path="/admin/login" element={<Login />} />
           
           {/* قسم المدونة: الآن سيظهر الفهرس وتفتح التدوينة */}
-          // استبدل السطرين اللذين أرسلتهما لي بهذين السطرين:
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:id" element={<BlogPost />} />
           
