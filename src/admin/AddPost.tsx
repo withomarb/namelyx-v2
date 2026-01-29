@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // تنسيق المحرر
+import 'react-quill/dist/quill.snow.css'; 
 import { db, auth } from '../firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -19,6 +19,17 @@ const AddPost = () => {
     });
     return () => unsubscribe();
   }, [navigate]);
+
+  // --- دالة إنشاء الرابط الصديق (Slug) المضافة ---
+  const createSlug = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')           // استبدال المسافات بشرطات
+      .replace(/[^\w\u0621-\u064A-]+/g, '') // دعم الحروف العربية والإنجليزية وحذف الرموز
+      .replace(/--+/g, '-');          // منع تكرار الشرطات
+  };
 
   const modules = {
     toolbar: [
@@ -39,7 +50,8 @@ const AddPost = () => {
         title,
         content,
         category,
-        status, // حفظ الحالة (منشور أو مسودة)
+        status, 
+        slug: createSlug(title), // السطر الجديد لحفظ الرابط الصديق
         createdAt: serverTimestamp(),
       });
       alert(status === 'Published' ? "🚀 تم النشر بنجاح!" : "📁 تم الحفظ في المسودات بنجاح");

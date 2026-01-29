@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { db } from '../firebase/config';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -9,14 +9,23 @@ const BlogPost = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // تم توحيد الاسم هنا ليكون fetchPost
     const fetchPost = async () => {
       if (!id) return;
       try {
-        const docRef = doc(db, "posts", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setPost(docSnap.data());
+        // 1. المحاولة الأولى: البحث عن المقال باستخدام الـ Slug (للسيو)
+        const q = query(collection(db, "posts"), where("slug", "==", id), limit(1));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          // وجدنا المقال عن طريق الرابط الصديق
+          setPost(querySnapshot.docs[0].data());
+        } else {
+          // 2. المحاولة الثانية: البحث عن طريق الـ ID (للمقالات القديمة)
+          const docRef = doc(db, "posts", id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setPost(docSnap.data());
+          }
         }
       } catch (error) {
         console.error("Error fetching article:", error);
@@ -25,7 +34,7 @@ const BlogPost = () => {
       }
     };
     
-    fetchPost(); // الاستدعاء الآن مطابق تماماً لاسم الدالة
+    fetchPost();
   }, [id]);
 
   if (loading) return <div className="min-h-screen bg-brand-bg pt-40 text-center text-brand-accent animate-pulse uppercase tracking-widest">Opening Article...</div>;
@@ -51,7 +60,7 @@ const BlogPost = () => {
           <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        {/* عرض المحتوى المنسق - المحرك الذي يقرأ H1, H2.. إلخ */}
+        {/* عرض المحتوى المنسق */}
         <div 
           className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg blog-render-area"
           dangerouslySetInnerHTML={{ __html: post.content }}

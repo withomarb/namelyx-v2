@@ -15,7 +15,6 @@ const EditPost = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // التأكد من تسجيل الدخول
     onAuthStateChanged(auth, (user) => {
       if (!user) navigate('/admin/login');
     });
@@ -40,6 +39,17 @@ const EditPost = () => {
     fetchPost();
   }, [id, navigate]);
 
+  // --- دالة إنشاء الرابط الصديق (Slug) المضافة لضمان التزامن عند التعديل ---
+  const createSlug = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\u0621-\u064A-]+/g, '')
+      .replace(/--+/g, '-');
+  };
+
   const handleUpdate = async (status: 'Published' | 'Draft') => {
     if (!id) return;
     try {
@@ -49,6 +59,7 @@ const EditPost = () => {
         content,
         category,
         status,
+        slug: createSlug(title), // تحديث الرابط الصديق بناءً على العنوان الجديد
         updatedAt: new Date()
       });
       alert("✅ تم تحديث المقال بنجاح!");

@@ -12,7 +12,7 @@ const BlogIndex = () => {
       try {
         const q = query(
           collection(db, "posts"), 
-          where("status", "==", "Published"), // نجلب المنشور فقط
+          where("status", "==", "Published"), 
           orderBy("createdAt", "desc")
         );
         const querySnapshot = await getDocs(q);
@@ -42,10 +42,15 @@ const BlogIndex = () => {
                 <span className="text-[10px] text-brand-accent font-bold mb-4 block uppercase tracking-widest">{post.category}</span>
                 <h2 className="text-2xl font-bold text-white mb-4 group-hover:text-brand-accent transition-colors leading-tight">{post.title}</h2>
                 <p className="text-gray-400 text-sm font-light leading-relaxed line-clamp-3 mb-8">
-                  {post.content.replace(/<[^>]*>/g, '')} {/* حذف وسوم HTML للمعاينة فقط */}
+                  {post.content.replace(/<[^>]*>/g, '')}
                 </p>
               </div>
-              <Link to={`/blog/${post.id}`} className="text-[10px] font-bold text-white uppercase tracking-[0.2em] flex items-center gap-2 hover:text-brand-accent transition-colors">
+              
+              {/* --- التعديل هنا: استخدام slug إذا توفر، وإلا نستخدم id --- */}
+              <Link 
+                to={`/blog/${post.slug || post.id}`} 
+                className="text-[10px] font-bold text-white uppercase tracking-[0.2em] flex items-center gap-2 hover:text-brand-accent transition-colors"
+              >
                 Read Article <span className="text-lg">→</span>
               </Link>
             </div>
