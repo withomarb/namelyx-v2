@@ -10,16 +10,20 @@ interface DomainCardProps {
 const DomainCard: React.FC<DomainCardProps> = ({ domain, index, onInquire }) => {
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'Offers Under Review': return 'text-yellow-400 border-yellow-400/20 shadow-yellow-400/10';
-      case 'Sold': return 'text-red-500 border-red-500/20 shadow-red-500/10';
+      // تعديل الحالة لتطابق "Review" القادمة من قاعدة البيانات باللون الأصفر
+      case 'Review': 
+        return 'text-yellow-400 border-yellow-400/20 shadow-yellow-400/10';
+      case 'Sold': 
+        return 'text-red-500 border-red-500/20 shadow-red-500/10';
       case 'Available': 
-      default: return 'text-brand-accent border-brand-accent/20 shadow-[0_0_10px_rgba(0,255,157,0.1)]';
+      default: 
+        return 'text-brand-accent border-brand-accent/20 shadow-[0_0_10px_rgba(0,255,157,0.1)]';
     }
   };
 
   const isSold = domain.status === 'Sold';
-  const displayStatus = domain.status || 'Available';
-  const statusStyles = getStatusColor(displayStatus);
+  const displayStatusValue = domain.status || 'Available';
+  const statusStyles = getStatusColor(displayStatusValue);
 
   return (
     <div 
@@ -48,7 +52,8 @@ const DomainCard: React.FC<DomainCardProps> = ({ domain, index, onInquire }) => 
       <div className="relative z-10 h-10 flex items-end justify-center w-full mt-6">
         <div className="absolute bottom-0 transition-transform duration-300 group-hover:translate-y-1">
           <span className={`inline-block px-3 py-1.5 border rounded-full text-[10px] font-bold uppercase tracking-[0.15em] ${statusStyles} backdrop-blur-sm bg-black/20`}>
-            {displayStatus}
+            {/* عرض النص الإنجليزي الجديد بدلاً من كلمة Review */}
+            {displayStatusValue === 'Review' ? 'OFFER RECEIVED' : displayStatusValue}
           </span>
         </div>
       </div>

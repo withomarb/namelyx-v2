@@ -76,7 +76,7 @@ const EditDomain = () => {
           >
             <option value="Available">Available</option>
             <option value="Sold">Sold</option>
-            <option value="Pending">Pending</option>
+            <option value="Review">OFFER RECEIVED</option>
             <option value="Hidden">Hidden</option>
           </select>
           <button type="submit" className="w-full py-4 bg-brand-accent text-black font-bold uppercase hover:bg-green-400 transition-all">

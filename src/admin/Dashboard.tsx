@@ -69,8 +69,15 @@ const AdminDashboard = () => {
                   <td className="p-4 font-bold">{domain.name}</td>
                   <td className="p-4 opacity-70">${domain.price}</td>
                   <td className="p-4">
-                    <span className="bg-brand-accent/20 text-brand-accent px-3 py-1 rounded-full text-[10px] font-bold border border-brand-accent/20 uppercase">
-                      {domain.status}
+                    <span 
+                    className={`px-3 py-1 rounded-full text-[10px] font-bold border uppercase ${
+                    domain.status === 'Review' 
+                    ? 'bg-yellow-500/20 text-yellow-500 border-yellow-500/10' 
+                    : domain.status === 'Sold'
+                    ? 'bg-red-500/20 text-red-500 border-red-500/10'
+                    : 'bg-brand-accent/20 text-brand-accent border-brand-accent/10'
+                    }`}>
+                    {domain.status === 'Review' ? 'OFFER RECEIVED' : domain.status}
                     </span>
                   </td>
                   <td className="p-4 text-right">
