@@ -1,63 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // استيراد التنسيق
-import { db } from '../firebase/config';
+import 'react-quill/dist/quill.snow.css'; // تنسيق المحرر
+import { db, auth } from '../firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const AddPost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('Tech');
+  const [isPublishing, setIsPublishing] = useState(false);
   const navigate = useNavigate();
 
-  // إعدادات شريط الأدوات الخاص بالـ SEO
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) navigate('/admin/login');
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
   const modules = {
     toolbar: [
       [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline','blockquote'],
+      ['bold', 'italic', 'underline', 'blockquote'],
       [{'list': 'ordered'}, {'list': 'bullet'}],
       ['link', 'image'],
       ['clean']
     ],
   };
 
-  const handlePublish = async () => {
+  const handleSave = async (status: 'Published' | 'Draft') => {
+    if (!title || !content) return alert("الرجاء إدخال العنوان والمحتوى");
+    
+    setIsPublishing(true);
     try {
       await addDoc(collection(db, "posts"), {
         title,
-        content, // سيتم حفظه كـ HTML (H1, H2, P...)
+        content,
         category,
+        status, // حفظ الحالة (منشور أو مسودة)
         createdAt: serverTimestamp(),
       });
-      alert("✅ المقال جاهز للنشر!");
+      alert(status === 'Published' ? "🚀 تم النشر بنجاح!" : "📁 تم الحفظ في المسودات بنجاح");
       navigate('/admin/posts');
-    } catch (e) { alert("خطأ في النشر"); }
+    } catch (error) {
+      console.error(error);
+      alert("فشل في العملية");
+    } finally {
+      setIsPublishing(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-brand-bg pt-32 px-4 text-white">
-      <div className="max-w-5xl mx-auto space-y-6">
-        <input 
-          value={title} onChange={e => setTitle(e.target.value)}
-          className="w-full bg-transparent text-4xl font-black outline-none border-b border-white/10 pb-4 focus:border-brand-accent transition-all"
-          placeholder="Title of your tech article..."
-        />
+      <div className="max-w-5xl mx-auto bg-white/5 border border-white/10 p-8 rounded-2xl">
+        <h2 className="text-3xl font-black mb-8 text-brand-accent uppercase italic">Create Content</h2>
         
-        <div className="bg-white rounded-lg text-black overflow-hidden">
-          <ReactQuill 
-            theme="snow" 
-            value={content} 
-            onChange={setContent} 
-            modules={modules}
-            placeholder="Start writing your SEO-friendly content..."
-            className="h-[400px] mb-12"
+        <div className="space-y-6">
+          <input 
+            value={title} onChange={e => setTitle(e.target.value)}
+            className="w-full bg-black border border-white/20 p-4 rounded-lg focus:border-brand-accent outline-none text-2xl"
+            placeholder="Article Title..."
           />
-        </div>
+          
+          <div className="bg-white rounded-lg text-black overflow-hidden min-h-[400px]">
+            <ReactQuill 
+              theme="snow" value={content} onChange={setContent} modules={modules}
+              className="h-[350px]" placeholder="Write your SEO-friendly content here..."
+            />
+          </div>
 
-        <button onClick={handlePublish} className="bg-brand-accent text-black px-10 py-4 font-bold uppercase tracking-widest hover:scale-105 transition-all">
-          Publish to Namelyx Blog
-        </button>
+          <div className="flex gap-4 pt-8">
+            <button 
+              onClick={() => handleSave('Published')} disabled={isPublishing}
+              className="flex-1 bg-brand-accent text-black py-4 font-bold uppercase hover:bg-green-400 transition-all"
+            >
+              {isPublishing ? 'Publishing...' : 'Publish Now'}
+            </button>
+            <button 
+              onClick={() => handleSave('Draft')} disabled={isPublishing}
+              className="flex-1 bg-white/10 text-white py-4 font-bold uppercase hover:bg-white/20 transition-all"
+            >
+              Save as Draft
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

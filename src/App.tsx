@@ -23,6 +23,7 @@ import BlogIndex from './components/BlogIndex'; // السطر الذي سألت 
 import BlogPost from './components/BlogPost';
 import AddPost from './admin/AddPost';
 import ManagePosts from './admin/ManagePosts';
+import EditPost from './admin/EditPost';
 
 // استيراد الملفات القانونية والدعم
 import Privacy from './components/Privacy';
@@ -82,6 +83,9 @@ const AppContent: React.FC = () => {
           <Route path="/admin/edit/:id" element={<EditDomain />} />
           <Route path="/admin/add-post" element={<AddPost />} />
           <Route path="/admin/posts" element={<ManagePosts />} />
+          <Route path="/admin/posts" element={<ManagePosts />} />
+          <Route path="/admin/add-post" element={<AddPost />} />
+          <Route path="/admin/edit-post/:id" element={<EditPost />} />
         </Routes>
       </main>
 
