@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { getAllDomains } from '../utils/content';
+// استيراد أدوات Firebase بدلاً من المحتوى القديم
+import { db } from '../firebase/config';
+import { collection, getDocs } from 'firebase/firestore';
 
 const Hero: React.FC = () => {
   const [stats, setStats] = useState({ available: 0, review: 0 });
 
   useEffect(() => {
     const fetchStats = async () => {
-      const domains = await getAllDomains();
-      const available = domains.filter(d => d.attributes.status === 'Available').length;
-      const review = domains.filter(d => d.attributes.status === 'Under Review' || d.attributes.status === 'Offer Under Review').length;
-      setStats({ available, review });
+      try {
+        // جلب الدومينات مباشرة من قاعدة البيانات الحية
+        const querySnapshot = await getDocs(collection(db, "domains"));
+        const domains = querySnapshot.docs.map(doc => doc.data());
+
+        // حساب الإحصائيات بناءً على القيم الجديدة التي برمجناها
+        const available = domains.filter(d => d.status === 'Available').length;
+        
+        // هنا نحسب الحالات التي أسميناها "Review" والتي تظهر كـ OFFER RECEIVED
+        const review = domains.filter(d => d.status === 'Review').length;
+
+        setStats({ available, review });
+      } catch (error) {
+        console.error("Error fetching live stats:", error);
+      }
     };
     fetchStats();
   }, []);
@@ -25,20 +38,21 @@ const Hero: React.FC = () => {
           NAMELYX
         </h1>
         
-        {/* قسم الإحصائيات المطلوب - بالأخضر الفسفوري */}
+        {/* قسم الإحصائيات - الآن أصبح حياً! */}
         <div className="flex items-center justify-center gap-6 mb-10 font-mono text-[10px] md:text-xs tracking-[0.3em] uppercase">
           <div className="flex items-center gap-2 text-brand-accent">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-accent"></span>
             </span>
-            <span>Available: {stats.available || '8'}</span>
+            <span>Available: {stats.available}</span>
           </div>
           
           <div className="w-[1px] h-3 bg-white/20"></div>
           
           <div className="text-white/40">
-            Under Review: <span className="text-white/80">{stats.review || '2'}</span>
+            {/* جعلنا الاسم هنا يتوافق مع "OFFER RECEIVED" أو نبقيه "Under Review" حسب رغبتك */}
+            Offers: <span className="text-white/80">{stats.review}</span>
           </div>
         </div>
 
