@@ -9,31 +9,51 @@ const BlogPost = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // تم توحيد الاسم هنا ليكون fetchPost
     const fetchPost = async () => {
       if (!id) return;
-      const docSnap = await getDoc(doc(db, "posts", id));
-      if (docSnap.exists()) setPost(docSnap.data());
-      setLoading(false);
+      try {
+        const docRef = doc(db, "posts", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setPost(docSnap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching article:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchPost();
+    
+    fetchPost(); // الاستدعاء الآن مطابق تماماً لاسم الدالة
   }, [id]);
 
-  if (loading) return <div className="min-h-screen bg-brand-bg pt-40 text-center text-white">Loading Article...</div>;
-  if (!post) return <div className="min-h-screen bg-brand-bg pt-40 text-center text-white">Post not found.</div>;
+  if (loading) return <div className="min-h-screen bg-brand-bg pt-40 text-center text-brand-accent animate-pulse uppercase tracking-widest">Opening Article...</div>;
+  if (!post) return <div className="min-h-screen bg-brand-bg pt-40 text-center text-white">Article not found.</div>;
 
   return (
     <div className="min-h-screen bg-brand-bg pt-40 pb-20 px-6">
       <article className="max-w-3xl mx-auto">
-        <Link to="/blog" className="text-brand-accent text-xs font-bold uppercase tracking-widest mb-8 inline-block">← Back to Blog</Link>
-        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight uppercase italic tracking-tighter">{post.title}</h1>
-        <div className="flex gap-4 mb-12 text-[10px] uppercase tracking-widest text-gray-500 font-bold">
-          <span>{post.category}</span>
-          <span>•</span>
-          <span>{post.createdAt?.toDate().toLocaleDateString()}</span>
+        {/* زر العودة بتصميم Namelyx */}
+        <Link to="/blog" className="text-brand-accent text-[10px] font-bold uppercase tracking-[0.2em] mb-12 inline-block hover:opacity-70 transition-opacity">
+          ← Back to Journal
+        </Link>
+
+        {/* عنوان المقال الفخم */}
+        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight uppercase italic tracking-tighter">
+          {post.title}
+        </h1>
+
+        {/* معلومات المقال */}
+        <div className="flex items-center gap-4 mb-12 text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold border-y border-white/5 py-4">
+          <span className="text-brand-accent">{post.category}</span>
+          <span className="w-1 h-1 bg-white/20 rounded-full"></span>
+          <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
-        {/* عرض المحتوى بتنسيق HTML الذي حفظناه من المحرر */}
+
+        {/* عرض المحتوى المنسق - المحرك الذي يقرأ H1, H2.. إلخ */}
         <div 
-          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed blog-content-area"
+          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg blog-render-area"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
