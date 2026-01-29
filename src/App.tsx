@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import AddDomain from './admin/AddDomain';
+import Login from './admin/Login';
 
 // استيراد المكونات الأساسية
 import Header from './components/Header';
@@ -58,6 +59,7 @@ const AppContent: React.FC = () => {
           <Route path="/buy-transfer" element={<BuyTransfer />} />
           <Route path="/valuation" element={<ValuationTool />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/admin/login" element={<Login />} />
           
           {/* قسم المدونة: الآن سيظهر الفهرس وتفتح التدوينة */}
           <Route path="/blog" element={<BlogIndex onReadPost={(slug) => navigate(`/blog/${slug}`)} />} />
