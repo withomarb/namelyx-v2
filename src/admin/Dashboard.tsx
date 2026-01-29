@@ -10,6 +10,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // مراقبة حالة تسجيل الدخول
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) navigate('/admin/login');
     });
@@ -18,11 +19,12 @@ const AdminDashboard = () => {
       try {
         const q = query(collection(db, "domains"), orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
-        setDomains(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setDomains(data);
       } catch (error) {
-        console.error("Error fetching domains:", error);
+        console.error("Firebase Error:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // نوقف التحميل حتى لو فشل الجلب لكي لا تعلق الصفحة
       }
     };
 
@@ -32,8 +34,12 @@ const AdminDashboard = () => {
 
   const handleDelete = async (id: string) => {
     if (window.confirm("هل أنت متأكد من حذف هذا الدومين؟")) {
-      await deleteDoc(doc(db, "domains", id));
-      setDomains(domains.filter(d => d.id !== id));
+      try {
+        await deleteDoc(doc(db, "domains", id));
+        setDomains(domains.filter(d => d.id !== id));
+      } catch (e) {
+        alert("فشل الحذف، تأكد من صلاحيات Firestore");
+      }
     }
   };
 
@@ -41,9 +47,9 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-brand-bg pt-32 px-6 text-white">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-10">
-          <h1 className="text-4xl font-black tracking-tighter italic">COMMAND CENTER</h1>
+          <h1 className="text-4xl font-black tracking-tighter italic uppercase">Command Center</h1>
           <Link to="/admin/add" className="bg-brand-accent text-black px-6 py-2 font-bold hover:bg-green-400 transition-all">
-            + ADD NEW DOMAIN
+            + Add New Domain
           </Link>
         </div>
 
@@ -62,14 +68,13 @@ const AdminDashboard = () => {
                 <tr key={domain.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="p-4 font-bold">{domain.name}</td>
                   <td className="p-4 opacity-70">${domain.price}</td>
-                  <td className="p-4 text-xs">
-                    <span className="bg-green-500/20 text-green-500 px-2 py-1 rounded-full border border-green-500/20">
+                  <td className="p-4">
+                    <span className="bg-brand-accent/20 text-brand-accent px-3 py-1 rounded-full text-[10px] font-bold border border-brand-accent/20 uppercase">
                       {domain.status}
                     </span>
                   </td>
-                  {/* هنا قمنا بتحديث خلية الأزرار لتشمل التعديل */}
                   <td className="p-4 text-right">
-                    <div className="flex justify-end gap-6">
+                    <div className="flex justify-end gap-6 items-center">
                       <Link 
                         to={`/admin/edit/${domain.id}`} 
                         className="text-brand-accent hover:text-white text-sm font-bold uppercase transition-colors"
@@ -78,7 +83,7 @@ const AdminDashboard = () => {
                       </Link>
                       <button 
                         onClick={() => handleDelete(domain.id)}
-                        className="text-red-500 hover:text-red-400 text-sm font-bold uppercase transition-colors"
+                        className="text-red-500 hover:text-red-400 text-sm font-bold uppercase"
                       >
                         Delete
                       </button>
@@ -88,7 +93,18 @@ const AdminDashboard = () => {
               ))}
             </tbody>
           </table>
-          {loading && <div className="p-10 text-center animate-pulse">Loading data...</div>}
+          
+          {loading && (
+            <div className="p-20 text-center animate-pulse text-brand-accent tracking-widest text-sm uppercase">
+              Fetching inventory...
+            </div>
+          )}
+          
+          {!loading && domains.length === 0 && (
+            <div className="p-20 text-center text-white/40 text-sm uppercase">
+              No domains found in database.
+            </div>
+          )}
         </div>
       </div>
     </div>
