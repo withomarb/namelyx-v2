@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 const AddDomain = () => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const [description, setDescription] = useState(''); // حقل الوصف الجديد
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // التأكد من أن المستخدم مسجل دخوله فعلياً
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) navigate('/admin/login');
@@ -20,21 +20,22 @@ const AddDomain = () => {
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !price) return alert("الرجاء ملء كافة الحقول");
+    if (!name || !price || !description) return alert("الرجاء ملء كافة الحقول بما في ذلك الوصف");
     
     setLoading(true);
     try {
       await addDoc(collection(db, "domains"), {
         name,
         price,
+        description, // إرسال الوصف لقاعدة البيانات
         status: "Available",
         createdAt: serverTimestamp(),
       });
-      alert("🚀 تم حفظ الدومين بنجاح في قاعدة البيانات!");
-      setName(''); setPrice('');
+      alert("🚀 تم حفظ الدومين ووصفه بنجاح!");
+      setName(''); setPrice(''); setDescription('');
     } catch (error) {
       console.error("خطأ:", error);
-      alert("فشل في الحفظ، تأكد من إعدادات Firestore Rules");
+      alert("فشل في الحفظ");
     } finally {
       setLoading(false);
     }
@@ -46,11 +47,19 @@ const AddDomain = () => {
         <h2 className="text-3xl font-black mb-8 text-brand-accent uppercase tracking-tighter">Add Premium Domain</h2>
         <form onSubmit={handleAdd} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium mb-2 opacity-50">Domain Name (e.g. AI-Expert.com)</label>
+            <label className="block text-sm font-medium mb-2 opacity-50">Domain Name</label>
             <input 
               value={name} onChange={e => setName(e.target.value)}
               className="w-full bg-black border border-white/20 p-4 rounded-lg focus:border-brand-accent outline-none"
-              placeholder="Enter domain name..."
+              placeholder="e.g. AI-Expert.com"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2 opacity-50">Description (Short Tagline)</label>
+            <input 
+              value={description} onChange={e => setDescription(e.target.value)}
+              className="w-full bg-black border border-white/20 p-4 rounded-lg focus:border-brand-accent outline-none"
+              placeholder="e.g. Premium AI and Tech domain"
             />
           </div>
           <div>
