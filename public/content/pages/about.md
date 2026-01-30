@@ -8,7 +8,7 @@ At Namelyx, we believe that the right name is an asset class of its own. Founded
 
 Our mission is to bridge the gap between abstract technology and tangible brand value. We curate domains that are not just catchy, but strategic. We look for names that pass the "Radio Test," exhibit linguistic symmetry, and possess high future liquidity.
 
-### Who We Are
+### We Are
 
 We are a team of digital real estate investors, brand strategists, and tech enthusiasts. We understand that a startup's journey begins with its name. A powerful domain can reduce customer acquisition costs, increase trust, and signal authority from day one.
 
