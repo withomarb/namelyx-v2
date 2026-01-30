@@ -12,7 +12,6 @@ const BlogPost = () => {
     const fetchPost = async () => {
       if (!id) return;
       try {
-        // 1. البحث باستخدام الـ Slug للسيو
         const q = query(collection(db, "posts"), where("slug", "==", id), limit(1));
         const querySnapshot = await getDocs(q);
         
@@ -21,7 +20,6 @@ const BlogPost = () => {
           setPost(data);
           document.title = `${data.title} | Namelyx Journal`;
         } else {
-          // 2. البحث باستخدام الـ ID كخيار احتياطي
           const docRef = doc(db, "posts", id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
@@ -60,14 +58,13 @@ const BlogPost = () => {
           <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        {/* التعديل القسري والنهائي:
-            1. الروابط [&_a]: لون فسفوري، عريض، وبدون خط تحتها.
-            2. العناوين (prose-headings): لون فسفوري تلقائي، مائل (Italic)، وبخط عريض جداً.
-        */}
+        {/* --- القوة القسرية النهائية لتلوين العناوين والروابط --- */}
         <div 
-          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg 
+          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg blog-render-area 
                      [&_a]:!text-brand-accent [&_a]:!font-bold [&_a]:!no-underline hover:[&_a]:!underline
-                     prose-headings:!text-brand-accent prose-headings:!italic prose-headings:!font-black prose-headings:tracking-tighter
+                     [&_h1]:!text-brand-accent [&_h2]:!text-brand-accent [&_h3]:!text-brand-accent [&_h4]:!text-brand-accent
+                     [&_h1]:!italic [&_h2]:!italic [&_h3]:!italic
+                     [&_h1]:!font-black [&_h2]:!font-black [&_h3]:!font-black
                      transition-all"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
