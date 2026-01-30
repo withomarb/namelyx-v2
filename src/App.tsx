@@ -100,7 +100,7 @@ const AppContent: React.FC = () => {
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/about" element={<About onNavigate={(path) => navigate(path)} />} />
           <Route path="/admin/domains" element={<ManageDomains />} />
         </Routes>
       </main>
