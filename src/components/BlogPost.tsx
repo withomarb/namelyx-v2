@@ -60,10 +60,15 @@ const BlogPost = () => {
           <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        {/* التعديل القسري هنا: استخدام علامة التعجب (!) لفرض اللون الأخضر الفسفوري وكسر ستايلات المحرر */}
+        {/* التعديل القسري والنهائي:
+            1. الروابط [&_a]: لون فسفوري، عريض، وبدون خط تحتها.
+            2. العناوين (prose-headings): لون فسفوري تلقائي، مائل (Italic)، وبخط عريض جداً.
+        */}
         <div 
           className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg 
-                     [&_a]:!text-brand-accent [&_a]:!font-bold [&_a]:!no-underline hover:[&_a]:!text-white hover:[&_a]:!underline transition-all"
+                     [&_a]:!text-brand-accent [&_a]:!font-bold [&_a]:!no-underline hover:[&_a]:!underline
+                     prose-headings:!text-brand-accent prose-headings:!italic prose-headings:!font-black prose-headings:tracking-tighter
+                     transition-all"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
