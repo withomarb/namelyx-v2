@@ -12,6 +12,7 @@ const BlogPost = () => {
     const fetchPost = async () => {
       if (!id) return;
       try {
+        // 1. البحث باستخدام الـ Slug للسيو
         const q = query(collection(db, "posts"), where("slug", "==", id), limit(1));
         const querySnapshot = await getDocs(q);
         
@@ -20,6 +21,7 @@ const BlogPost = () => {
           setPost(data);
           document.title = `${data.title} | Namelyx Journal`;
         } else {
+          // 2. البحث باستخدام الـ ID كخيار احتياطي
           const docRef = doc(db, "posts", id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
@@ -58,10 +60,10 @@ const BlogPost = () => {
           <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        {/* التعديل الجوهري هنا: استهداف مباشر لكل رابط داخل هذا الـ div */}
+        {/* التعديل القسري هنا: استخدام علامة التعجب (!) لفرض اللون الأخضر الفسفوري وكسر ستايلات المحرر */}
         <div 
           className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg 
-                     [&_a]:text-brand-accent [&_a]:no-underline hover:[&_a]:underline [&_a]:font-bold transition-all"
+                     [&_a]:!text-brand-accent [&_a]:!font-bold [&_a]:!no-underline hover:[&_a]:!text-white hover:[&_a]:!underline transition-all"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
