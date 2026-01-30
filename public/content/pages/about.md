@@ -2,7 +2,7 @@
 title: "About Namelyx"
 ---
 
-At Namelyx, we believe that the right name is an asset class of its own. Founded in 2024, we recognized a gap in the market for premium, tech-forward digital identities that cater specifically to the AI, Web3, and SaaS sectors.
+At Namelyx, we believe that the right name is an asset class of its own. Founded in 2025, we recognized a gap in the market for premium, tech-forward digital identities that cater specifically to the AI, Web3, and SaaS sectors.
 
 ### Our Mission
 
