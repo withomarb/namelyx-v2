@@ -13,6 +13,7 @@ import Hero from './components/Hero';
 import Portfolio from './components/Portfolio';
 import Expertise from './components/Expertise';
 import Methodology from './components/Methodology';
+import About from './components/About';
 import BuyTransfer from './components/BuyTransfer';
 import ValuationTool from './components/ValuationTool';
 import Contact from './components/Contact';
@@ -99,7 +100,7 @@ const AppContent: React.FC = () => {
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
           <Route path="/faq" element={<Faq />} />
-          <Route path="/about" element={<Methodology />} />
+          <Route path="/about" element={<About />} />
           <Route path="/admin/domains" element={<ManageDomains />} />
         </Routes>
       </main>
