@@ -12,23 +12,19 @@ const BlogPost = () => {
     const fetchPost = async () => {
       if (!id) return;
       try {
-        // 1. المحاولة الأولى: البحث عن المقال باستخدام الـ Slug (للسيو)
         const q = query(collection(db, "posts"), where("slug", "==", id), limit(1));
         const querySnapshot = await getDocs(q);
         
         if (!querySnapshot.empty) {
           const data = querySnapshot.docs[0].data();
           setPost(data);
-          // --- تحديث عنوان الصفحة للأرشفة ---
           document.title = `${data.title} | Namelyx Journal`;
         } else {
-          // 2. المحاولة الثانية: البحث عن طريق الـ ID (للمقالات القديمة)
           const docRef = doc(db, "posts", id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const data = docSnap.data();
             setPost(data);
-            // --- تحديث عنوان الصفحة للأرشفة ---
             document.title = `${data.title} | Namelyx Journal`;
           }
         }
@@ -48,26 +44,24 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-brand-bg pt-40 pb-20 px-6">
       <article className="max-w-3xl mx-auto">
-        {/* زر العودة بتصميم Namelyx */}
         <Link to="/blog" className="text-brand-accent text-[10px] font-bold uppercase tracking-[0.2em] mb-12 inline-block hover:opacity-70 transition-opacity">
           ← Back to Journal
         </Link>
 
-        {/* عنوان المقال الفخم */}
         <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight uppercase italic tracking-tighter">
           {post.title}
         </h1>
 
-        {/* معلومات المقال */}
         <div className="flex items-center gap-4 mb-12 text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold border-y border-white/5 py-4">
           <span className="text-brand-accent">{post.category}</span>
           <span className="w-1 h-1 bg-white/20 rounded-full"></span>
           <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        {/* عرض المحتوى المنسق - تم تحديث الكلاسات هنا لتغيير لون الروابط */}
+        {/* التعديل الجوهري هنا: استهداف مباشر لكل رابط داخل هذا الـ div */}
         <div 
-          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg blog-render-area prose-a:text-brand-accent hover:prose-a:text-white transition-all underline-offset-4"
+          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg 
+                     [&_a]:text-brand-accent [&_a]:no-underline hover:[&_a]:underline [&_a]:font-bold transition-all"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
