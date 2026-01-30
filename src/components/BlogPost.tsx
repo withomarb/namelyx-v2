@@ -17,14 +17,19 @@ const BlogPost = () => {
         const querySnapshot = await getDocs(q);
         
         if (!querySnapshot.empty) {
-          // وجدنا المقال عن طريق الرابط الصديق
-          setPost(querySnapshot.docs[0].data());
+          const data = querySnapshot.docs[0].data();
+          setPost(data);
+          // --- تحديث عنوان الصفحة للأرشفة ---
+          document.title = `${data.title} | Namelyx Journal`;
         } else {
           // 2. المحاولة الثانية: البحث عن طريق الـ ID (للمقالات القديمة)
           const docRef = doc(db, "posts", id);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            setPost(docSnap.data());
+            const data = docSnap.data();
+            setPost(data);
+            // --- تحديث عنوان الصفحة للأرشفة ---
+            document.title = `${data.title} | Namelyx Journal`;
           }
         }
       } catch (error) {
@@ -60,9 +65,9 @@ const BlogPost = () => {
           <span>{post.createdAt?.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
         </div>
 
-        {/* عرض المحتوى المنسق */}
+        {/* عرض المحتوى المنسق - تم تحديث الكلاسات هنا لتغيير لون الروابط */}
         <div 
-          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg blog-render-area"
+          className="prose prose-invert prose-brand max-w-none text-gray-300 leading-relaxed text-lg blog-render-area prose-a:text-brand-accent hover:prose-a:text-white transition-all underline-offset-4"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </article>
